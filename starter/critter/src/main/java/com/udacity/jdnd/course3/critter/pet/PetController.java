@@ -40,8 +40,8 @@ public class PetController {
         try {
             if(petDTO.getOwnerId()!=0) {
                 customer = customerService.findById(petDTO.getOwnerId());
-                petService.save(pet);
                 petService.savePetOwner(pet, customer);
+                customerService.save(customer);
             }
             else {
                 customer = new Customer();
@@ -81,6 +81,13 @@ public class PetController {
 
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        throw new UnsupportedOperationException();
+        List<Pet> pets;
+        try {
+            pets = petService.getAllPetsByOwner(ownerId);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException(e);
+        }
+        return pets.stream().
+                map(this::convertPetToPetDTO).collect(Collectors.toList());
     }
 }

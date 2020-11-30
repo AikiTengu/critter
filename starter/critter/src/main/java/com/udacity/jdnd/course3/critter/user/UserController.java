@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.user;
 
 import com.udacity.jdnd.course3.critter.entity.Customer;
 import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +33,11 @@ public class UserController {
     private CustomerDTO convertCustomerToCustomerDTO(Customer customer){
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
+        List<Pet> customerPets = customer.getPets();
+        if (customerPets != null) {
+            List<Long> petIds = customer.getPets().stream().map(Pet::getId).collect(Collectors.toList());
+            customerDTO.setPetIds(petIds);
+        }
         return customerDTO;
     }
 
@@ -45,7 +51,6 @@ public class UserController {
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
         Customer customer = new Customer(customerDTO.getName(), customerDTO.getPhoneNumber(), customerDTO.getNotes());
-
         try {
             customerService.save(customer);
         } catch (Exception e) {
@@ -69,7 +74,13 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
-        throw new UnsupportedOperationException();
+        Customer customer;
+        try {
+            customer = customerService.getCustomerByPet(petId);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException(e);
+        }
+        return convertCustomerToCustomerDTO(customer);
     }
 
     @PostMapping("/employee")
