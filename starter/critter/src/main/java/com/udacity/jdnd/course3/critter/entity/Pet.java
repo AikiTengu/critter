@@ -5,11 +5,12 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Pet {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private PetType type;
@@ -26,22 +27,20 @@ public class Pet {
     @Column (length = 500)
     private String notes;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pet", cascade = CascadeType.ALL)
+    private List<Schedule> schedules;
+
     public Pet() {
     }
 
-    public Pet(PetType type, String name, Customer customer, LocalDate birthDate, String notes) {
+    public Pet(PetType type, String name, LocalDate birthDate, String notes) {
         this.type = type;
         this.name = name;
-        this.customer = customer;
         this.birthDate = birthDate;
         this.notes = notes;
     }
 
     public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Pet(Long id) {
         this.id = id;
     }
 

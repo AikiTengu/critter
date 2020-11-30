@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Customer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Nationalized
@@ -19,9 +19,9 @@ public class Customer {
     @Column (length = 500)
     private String notes;
 
-    @OneToMany (fetch = FetchType.LAZY, mappedBy = "Customer", cascade = CascadeType.ALL)
+    @OneToMany (fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
     //one customer can have many pets
-    private List<Pet> petList;
+    private List<Pet> pets;
 
     public Customer() {
     }
@@ -64,11 +64,11 @@ public class Customer {
         this.notes = notes;
     }
 
-    public List<Pet> getPetList() {
-        return petList;
+    public List<Pet> getpets() {
+        return pets;
     }
 
-    public void setPetList(List<Pet> petList) {
-        this.petList = petList;
+    public void setpets(List<Pet> pets) {
+        this.pets = pets;
     }
 }

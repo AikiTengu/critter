@@ -10,14 +10,16 @@ import java.util.Set;
 @Entity
 public class Schedule {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
-    private List<Long> employeeIds;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
-    @ManyToMany
-    private List<Long> petIds;
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
     private LocalDate date;
 
@@ -40,20 +42,20 @@ public class Schedule {
         this.id = id;
     }
 
-    public List<Long> getEmployeeIds() {
-        return employeeIds;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeIds(List<Long> employeeIds) {
-        this.employeeIds = employeeIds;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
-    public List<Long> getPetIds() {
-        return petIds;
+    public Pet getPet() {
+        return pet;
     }
 
-    public void setPetIds(List<Long> petIds) {
-        this.petIds = petIds;
+    public void setPet(Pet pet) {
+        this.pet = pet;
     }
 
     public LocalDate getDate() {

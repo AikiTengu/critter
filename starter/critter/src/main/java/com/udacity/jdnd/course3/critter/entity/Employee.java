@@ -3,17 +3,15 @@ package com.udacity.jdnd.course3.critter.entity;
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 public class Employee {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Nationalized
@@ -25,13 +23,15 @@ public class Employee {
     @ElementCollection
     private Set<DayOfWeek> daysAvailable;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<Schedule> schedules;
+
     public Employee() {
     }
 
-    public Employee(String name, Set<EmployeeSkill> skills, Set<DayOfWeek> daysAvailable) {
+    public Employee(String name, Set<EmployeeSkill> skills) {
         this.name = name;
         this.skills = skills;
-        this.daysAvailable = daysAvailable;
     }
 
     public Long getId() {
