@@ -30,14 +30,16 @@ public class UserController {
     @Autowired
     EmployeeService employeeService;
 
-    private CustomerDTO convertCustomerToCustomerDTO(Customer customer){
+    private CustomerDTO convertCustomerToCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
+
         List<Pet> customerPets = customer.getPets();
         if (customerPets != null) {
             List<Long> petIds = customer.getPets().stream().map(Pet::getId).collect(Collectors.toList());
             customerDTO.setPetIds(petIds);
         }
+
         return customerDTO;
     }
 
@@ -49,19 +51,19 @@ public class UserController {
     }
 
     @PostMapping("/customer")
-    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
+    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
         Customer customer = new Customer(customerDTO.getName(), customerDTO.getPhoneNumber(), customerDTO.getNotes());
         try {
             customerService.save(customer);
         } catch (Exception e) {
             throw new UnsupportedOperationException(e);
         }
-        CustomerDTO savedCustomer=convertCustomerToCustomerDTO(customer);
+        CustomerDTO savedCustomer = convertCustomerToCustomerDTO(customer);
         return savedCustomer;
     }
 
     @GetMapping("/customer")
-    public List<CustomerDTO> getAllCustomers(){
+    public List<CustomerDTO> getAllCustomers() {
         List<Customer> customers;
         try {
             customers = customerService.getAlLCustomers();
@@ -73,7 +75,7 @@ public class UserController {
     }
 
     @GetMapping("/customer/pet/{petId}")
-    public CustomerDTO getOwnerByPet(@PathVariable long petId){
+    public CustomerDTO getOwnerByPet(@PathVariable long petId) {
         Customer customer;
         try {
             customer = customerService.getCustomerByPet(petId);
@@ -85,14 +87,14 @@ public class UserController {
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        Employee employee = new Employee(employeeDTO.getName(), employeeDTO.getSkills());
+        Employee employee = new Employee(employeeDTO.getName(), employeeDTO.getSkills(), employeeDTO.getDaysAvailable());
 
         try {
             employeeService.save(employee);
         } catch (Exception e) {
             throw new UnsupportedOperationException(e);
         }
-        EmployeeDTO savedEmployee=convertEmpToEmpDTO(employee);
+        EmployeeDTO savedEmployee = convertEmpToEmpDTO(employee);
         return savedEmployee;
     }
 
@@ -109,12 +111,25 @@ public class UserController {
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        Employee employee;
+        try {
+            employee = employeeService.getById(employeeId);
+            employee.setDaysAvailable(daysAvailable);
+            employeeService.save(employee);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException(e);
+        }
     }
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        List<Employee> employeeList;
+        try {
+            employeeList = employeeService.findForService(employeeDTO.getDate(), employeeDTO.getSkills());
+        } catch (Exception e) {
+            throw new UnsupportedOperationException(e);
+        }
+        return employeeList.stream().
+                map(this::convertEmpToEmpDTO).collect(Collectors.toList());
     }
-
 }

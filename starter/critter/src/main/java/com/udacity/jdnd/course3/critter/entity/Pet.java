@@ -27,8 +27,8 @@ public class Pet {
     @Column (length = 500)
     private String notes;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pet", cascade = CascadeType.ALL)
-    private List<Schedule> schedules;
+    @ManyToMany // a pet can have many events scheduled for week
+    private List<Schedule> scheduleList;
 
     public Pet() {
     }

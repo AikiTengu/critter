@@ -23,15 +23,16 @@ public class Employee {
     @ElementCollection
     private Set<DayOfWeek> daysAvailable;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
-    private List<Schedule> schedules;
+    @ManyToMany  //an employee can have many events scheduled for week
+    private List<Schedule> scheduleList;
 
     public Employee() {
     }
 
-    public Employee(String name, Set<EmployeeSkill> skills) {
+    public Employee(String name, Set<EmployeeSkill> skills, Set<DayOfWeek> daysAvailable) {
         this.name = name;
         this.skills = skills;
+        this.daysAvailable = daysAvailable;
     }
 
     public Long getId() {

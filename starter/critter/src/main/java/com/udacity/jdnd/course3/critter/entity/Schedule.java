@@ -13,13 +13,11 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+    @ManyToMany //a schedule for day can have many pets
+    private List<Employee> employeeList;
 
-    @ManyToOne
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    @ManyToMany //a schedule for day can have many employees
+    private List<Pet> petList;
 
     private LocalDate date;
 
@@ -42,20 +40,19 @@ public class Schedule {
         this.id = id;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public List<Employee> getEmployeeList() {
+        return employeeList;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
     }
 
-    public Pet getPet() {
-        return pet;
+    public List<Pet> getPetList() {
+        return petList;
     }
 
-    public void setPet(Pet pet) {
-        this.pet = pet;
+    public void setPetList(List<Pet> petList) { this.petList = petList;
     }
 
     public LocalDate getDate() {
