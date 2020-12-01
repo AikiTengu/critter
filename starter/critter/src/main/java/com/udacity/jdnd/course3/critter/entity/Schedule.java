@@ -13,12 +13,18 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL) //a schedule for day can have many pets
-    @JoinColumn(name = "employee_id")
+    //I put Join table annotations based on the corresponding entry in the Udacity Knowledge database, but
+    //I am not sure the app/db performance saw any changes
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //a schedule for day can have many pets
+    @JoinTable(name = "schedule_employee", joinColumns = { @JoinColumn(name = "schedule_id") },
+            inverseJoinColumns = { @JoinColumn(name = "employee_id") })
     private List<Employee> employeeList;
 
-    @ManyToMany(cascade = CascadeType.ALL) //a schedule for day can have many employees
-    @JoinColumn(name = "pet_id")
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //a schedule for day can have many pets
+    @JoinTable(name = "schedule_pet", joinColumns = { @JoinColumn(name = "schedule_id") },
+            inverseJoinColumns = { @JoinColumn(name = "pet_id") })
     private List<Pet> petList;
 
     private LocalDate date;
