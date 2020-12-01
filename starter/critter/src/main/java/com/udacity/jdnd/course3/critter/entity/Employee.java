@@ -23,7 +23,8 @@ public class Employee {
     @ElementCollection
     private Set<DayOfWeek> daysAvailable;
 
-    @ManyToMany  //an employee can have many events scheduled for week
+    @ManyToMany(cascade = CascadeType.ALL)  //an employee can have many events scheduled for week
+    @JoinColumn(name = "schedule_id")
     private List<Schedule> scheduleList;
 
     public Employee() {
@@ -65,5 +66,13 @@ public class Employee {
 
     public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
         this.daysAvailable = daysAvailable;
+    }
+
+    public List<Schedule> getScheduleList() {
+        return scheduleList;
+    }
+
+    public void setScheduleList(List<Schedule> scheduleList) {
+        this.scheduleList = scheduleList;
     }
 }

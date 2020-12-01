@@ -27,7 +27,8 @@ public class Pet {
     @Column (length = 500)
     private String notes;
 
-    @ManyToMany // a pet can have many events scheduled for week
+    @ManyToMany(cascade = CascadeType.ALL) // a pet can have many events scheduled for week
+    @JoinColumn(name = "schedule_id")
     private List<Schedule> scheduleList;
 
     public Pet() {
@@ -87,5 +88,13 @@ public class Pet {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public List<Schedule> getScheduleList() {
+        return scheduleList;
+    }
+
+    public void setScheduleList(List<Schedule> scheduleList) {
+        this.scheduleList = scheduleList;
     }
 }

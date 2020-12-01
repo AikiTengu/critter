@@ -56,7 +56,7 @@ public class UserController {
         try {
             customerService.save(customer);
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
         CustomerDTO savedCustomer = convertCustomerToCustomerDTO(customer);
         return savedCustomer;
@@ -68,7 +68,7 @@ public class UserController {
         try {
             customers = customerService.getAlLCustomers();
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
         return customers.stream().
                 map(this::convertCustomerToCustomerDTO).collect(Collectors.toList());
@@ -80,7 +80,7 @@ public class UserController {
         try {
             customer = customerService.getCustomerByPet(petId);
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
         return convertCustomerToCustomerDTO(customer);
     }
@@ -92,7 +92,7 @@ public class UserController {
         try {
             employeeService.save(employee);
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
         EmployeeDTO savedEmployee = convertEmpToEmpDTO(employee);
         return savedEmployee;
@@ -104,7 +104,7 @@ public class UserController {
         try {
             employee = employeeService.getById(employeeId);
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
         return convertEmpToEmpDTO(employee);
     }
@@ -117,7 +117,7 @@ public class UserController {
             employee.setDaysAvailable(daysAvailable);
             employeeService.save(employee);
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
     }
 
@@ -127,7 +127,7 @@ public class UserController {
         try {
             employeeList = employeeService.findForService(employeeDTO.getDate(), employeeDTO.getSkills());
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
         return employeeList.stream().
                 map(this::convertEmpToEmpDTO).collect(Collectors.toList());

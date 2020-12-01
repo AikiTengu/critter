@@ -27,6 +27,8 @@ public class EmployeeService {
         return employeeRepository.getOne(id);
     }
 
+    public List<Employee> getListById(List<Long> idList) {return  employeeRepository.findAllById(idList);}
+
     public void setAvailability(Set<DayOfWeek> availability, Employee employee) {
         employee.setDaysAvailable(availability);
         employeeRepository.save(employee);

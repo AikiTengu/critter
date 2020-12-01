@@ -49,7 +49,7 @@ public class PetController {
                 petService.save(pet);
             }
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
         PetDTO savedPet = convertPetToPetDTO(pet);
         return savedPet;
@@ -63,7 +63,7 @@ public class PetController {
         pet = petService.findById(petId);
     } catch(Exception e)
     {
-        throw new UnsupportedOperationException(e);
+        throw e;
     }
     return convertPetToPetDTO(pet);
 }
@@ -73,7 +73,7 @@ public class PetController {
         try {
             pets = petService.getAlLPets();
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
         return pets.stream().
                 map(this::convertPetToPetDTO).collect(Collectors.toList());
@@ -85,7 +85,7 @@ public class PetController {
         try {
             pets = petService.getAllPetsByOwner(ownerId);
         } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
+            throw e;
         }
         return pets.stream().
                 map(this::convertPetToPetDTO).collect(Collectors.toList());

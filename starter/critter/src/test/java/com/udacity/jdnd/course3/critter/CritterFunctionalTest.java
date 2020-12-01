@@ -185,12 +185,12 @@ public class CritterFunctionalTest {
         Set<EmployeeSkill> skillSet =  Sets.newHashSet(EmployeeSkill.PETTING);
 
         scheduleController.createSchedule(createScheduleDTO(petList, employeeList, date, skillSet));
-     /*   ScheduleDTO scheduleDTO = scheduleController.getAllSchedules().get(0);
+        ScheduleDTO scheduleDTO = scheduleController.getAllSchedules().get(0);
 
         Assertions.assertEquals(scheduleDTO.getActivities(), skillSet);
         Assertions.assertEquals(scheduleDTO.getDate(), date);
         Assertions.assertEquals(scheduleDTO.getEmployeeIds(), employeeList);
-        Assertions.assertEquals(scheduleDTO.getPetIds(), petList);*/
+        Assertions.assertEquals(scheduleDTO.getPetIds(), petList);
     }
 
     @Test

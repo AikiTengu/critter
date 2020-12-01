@@ -13,10 +13,12 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany //a schedule for day can have many pets
+    @ManyToMany(cascade = CascadeType.ALL) //a schedule for day can have many pets
+    @JoinColumn(name = "employee_id")
     private List<Employee> employeeList;
 
-    @ManyToMany //a schedule for day can have many employees
+    @ManyToMany(cascade = CascadeType.ALL) //a schedule for day can have many employees
+    @JoinColumn(name = "pet_id")
     private List<Pet> petList;
 
     private LocalDate date;
